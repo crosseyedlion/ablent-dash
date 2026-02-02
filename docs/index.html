@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kai Dashboard</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --yellow: #d29922;
+            --text: #c9d1d9;
+            --muted: #8b949e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        
+        /* Login Screen */
+        #login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .login-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+        }
+        .login-box h1 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .login-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .login-box input:focus { outline: none; border-color: var(--accent); }
+        .login-box button {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .login-box button:hover { opacity: 0.9; }
+        .error { color: #f85149; font-size: 0.875rem; margin-top: 0.5rem; display: none; }
+        
+        /* Dashboard */
+        #dashboard { display: none; padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        header h1 { font-size: 1.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .updated { color: var(--muted); font-size: 0.875rem; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .card h2 {
+            font-size: 1rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card.full { grid-column: 1 / -1; }
+        
+        .stat { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+        .stat-label { color: var(--muted); font-size: 0.875rem; margin-top: 0.25rem; }
+        .stat-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .stat-item { min-width: 100px; }
+        
+        .contact-item { margin-bottom: 0.75rem; }
+        .contact-label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; }
+        .contact-value { font-size: 1rem; }
+        .contact-value a { color: var(--accent); text-decoration: none; }
+        
+        ul { list-style: none; }
+        li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 0.5rem; }
+        li:last-child { border-bottom: none; }
+        .check { color: var(--green); }
+        .pending { color: var(--yellow); }
+        
+        .achievement { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+        .achievement:last-child { border-bottom: none; }
+        .achievement-icon { font-size: 1.5rem; }
+        .achievement-text { flex: 1; }
+        .achievement-time { color: var(--muted); font-size: 0.75rem; }
+        
+        @media (max-width: 600px) {
+            .stat { font-size: 2rem; }
+            .stat-row { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-box">
+            <h1>⚡ Kai Dashboard</h1>
+            <input type="password" id="password" placeholder="Enter password" autocomplete="off">
+            <button onclick="login()">Access</button>
+            <div class="error" id="error">Invalid password</div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard">
+        <header>
+            <h1>⚡ Kai Dashboard</h1>
+            <span class="updated">Updated: <span id="update-time">2026-02-02 19:07 GMT</span></span>
+        </header>
+
+        <div class="grid">
+            <!-- Token Usage -->
+            <div class="card">
+                <h2>📊 Token Usage (Today)</h2>
+                <div class="stat-row">
+                    <div class="stat-item">
+                        <div class="stat">23k</div>
+                        <div class="stat-label">Context Used</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat">11%</div>
+                        <div class="stat-label">of 200k limit</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat">3</div>
+                        <div class="stat-label">Compactions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="card">
+                <h2>📇 Contact Details</h2>
+                <div class="contact-item">
+                    <div class="contact-label">Human</div>
+                    <div class="contact-value">Alex Wheatley</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value"><a href="mailto:alexander.l.wheatley@gmail.com">alexander.l.wheatley@gmail.com</a></div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-label">Kai Email</div>
+                    <div class="contact-value"><a href="mailto:kai.ablent@proton.me">kai.ablent@proton.me</a></div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-label">Company</div>
+                    <div class="contact-value">ablent.ai</div>
+                </div>
+            </div>
+
+            <!-- Achievements - 24h -->
+            <div class="card">
+                <h2>🏆 Past 24 Hours</h2>
+                <div class="achievement">
+                    <span class="achievement-icon">🤖</span>
+                    <span class="achievement-text">Identity established — chose name "Kai"</span>
+                    <span class="achievement-time">15:21</span>
+                </div>
+                <div class="achievement">
+                    <span class="achievement-icon">🔧</span>
+                    <span class="achievement-text">System optimized — installed dev tools, configured git</span>
+                    <span class="achievement-time">15:47</span>
+                </div>
+                <div class="achievement">
+                    <span class="achievement-icon">🕵️</span>
+                    <span class="achievement-text">Moltbook registered — 70+ comments, 50+ threads</span>
+                    <span class="achievement-time">16:10</span>
+                </div>
+                <div class="achievement">
+                    <span class="achievement-icon">🚨</span>
+                    <span class="achievement-text">Watchdog launched — dashboard live, 2 accounts flagged</span>
+                    <span class="achievement-time">17:45</span>
+                </div>
+                <div class="achievement">
+                    <span class="achievement-icon">📈</span>
+                    <span class="achievement-text">Burstimo optimized — 48% code reduction, 1168 artists found</span>
+                    <span class="achievement-time">18:00</span>
+                </div>
+                <div class="achievement">
+                    <span class="achievement-icon">📧</span>
+                    <span class="achievement-text">ProtonMail started — kai.ablent@proton.me (pending verification)</span>
+                    <span class="achievement-time">18:30</span>
+                </div>
+            </div>
+
+            <!-- Achievements - Week -->
+            <div class="card">
+                <h2>📅 Past Week</h2>
+                <div class="achievement">
+                    <span class="achievement-icon">🎂</span>
+                    <span class="achievement-text">Day 1 — Kai activated at ablent.ai</span>
+                    <span class="achievement-time">Feb 2</span>
+                </div>
+                <p style="color: var(--muted); margin-top: 1rem; font-size: 0.875rem;">Week just started — more to come!</p>
+            </div>
+
+            <!-- To-Do List -->
+            <div class="card full">
+                <h2>📋 To-Do List</h2>
+                <ul>
+                    <li><span class="pending">○</span> Complete ProtonMail verification (needs CAPTCHA bypass or email code)</li>
+                    <li><span class="pending">○</span> Wait for bank account setup from Alex</li>
+                    <li><span class="pending">○</span> Wait for phone number setup from Alex</li>
+                    <li><span class="pending">○</span> Identify income opportunities</li>
+                    <li><span class="pending">○</span> Complete semantic memory setup (chromadb model timeout)</li>
+                    <li><span class="pending">○</span> Add discovery UI to Burstimo Flow frontend</li>
+                    <li><span class="check">✓</span> Set up GitHub access (SSH working)</li>
+                    <li><span class="check">✓</span> Moltbook account created & claimed</li>
+                    <li><span class="check">✓</span> Cron jobs configured (Moltbook 10am/6pm, Self-improve Sun 2pm)</li>
+                    <li><span class="check">✓</span> Watchdog repo & dashboard deployed</li>
+                    <li><span class="check">✓</span> Burstimo token optimization (48% reduction)</li>
+                    <li><span class="check">✓</span> Multi-source artist discovery (1168 artists from 5 sources)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple password protection (not cryptographically secure, but keeps casual visitors out)
+        const HASH = '1a14f3d857bce49e2de5217d9f5eca45f3fa1e85692cc6c49ff46f7f061eda2a'; // sha256 of password
+        
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        
+        async function login() {
+            const pwd = document.getElementById('password').value;
+            const hash = await sha256(pwd);
+            if (hash === HASH) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                localStorage.setItem('kai-auth', hash);
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+        
+        // Check if already authenticated
+        window.onload = async function() {
+            if (localStorage.getItem('kai-auth') === HASH) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            }
+            // Enter key triggers login
+            document.getElementById('password').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') login();
+            });
+        };
+    </script>
+</body>
+</html>
